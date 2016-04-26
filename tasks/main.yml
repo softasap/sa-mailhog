@@ -1,0 +1,3 @@
+---
+# tasks file for sa-mailhog
+  - include: tasks_mailhog.yml
