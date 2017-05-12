@@ -1,5 +1,5 @@
 ---
 # tasks file for sa-mailhog
-  - __detect_init_system.yml
+  - include: __detect_init_system.yml
 
   - include: tasks_mailhog.yml
