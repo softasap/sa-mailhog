@@ -1,27 +1,26 @@
 ---  # https://github.com/mailhog/MailHog
 
   - name: Mailhog | Download distribution
-    get_url: url=http://github.com/mailhog/MailHog/releases/download/v{{mailhog_version}}/MailHog_linux_amd64 dest=/usr/local/bin/MailHog mode=0755
+    get_url: url=http://github.com/mailhog/MailHog/releases/download/v{{ mailhog_version }}/MailHog_linux_amd64 dest=/usr/local/bin/MailHog mode=0755
     become: yes
     tags:
       - mailhog
 
   - name: Mailhog | Create upstart
-    template: src={{root_dir}}/templates/mailhog/mailhog.conf.j2 dest=/etc/init/mailhog.conf mode=0644
-    when: upstart_system == "upstart" and docker_test is not defined
-    become: yes
-    tags:
-      - mailhog
-
-  - name: Mailhog | Restart
-    service: name=mailhog state=restarted
+    template:
+      src: "{{role_dir}}/templates/mailhog/mailhog.conf.j2"
+      dest: /etc/init/mailhog.conf
+      mode: 0644
     when: upstart_system == "upstart" and docker_test is not defined
     become: yes
     tags:
       - mailhog
 
   - name: Mailhog | Create systemd service
-    template: src={{root_dir}}/templates/mailhog/mailhog.service.j2 dest=/etc/systemd/system/mailhog.service mode=0644
+    template:
+      src: "{{role_dir}}/templates/mailhog/mailhog.service.j2"
+      dest: /etc/systemd/system/mailhog.service
+      mode: 0644
     when: upstart_system == "systemd" and docker_test is not defined
     become: yes
     tags:
