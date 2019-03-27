@@ -1,7 +1,6 @@
 ---
 # defaults file for sa-mailhog
-  root_dir: "{{role_path}}"
   role_dir: "{{role_path}}"
-  mailhog_version: 0.1.6
+  mailhog_version: 1.0.0
 
 
