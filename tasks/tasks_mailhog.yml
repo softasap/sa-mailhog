@@ -1,5 +1,39 @@
 ---  # https://github.com/mailhog/MailHog
 
+
+  - name: Mailhog | Dependencies
+    package: name="apache2-utils" state=present
+    become: yes
+    tags:
+      - mailhog
+
+  - block:
+    - name: Mailhog | Pregenerate users
+      shell: htpasswd -b -c {{ mailhog_authfile }} {{ item.name }} {{ item.password }}
+      with_items: "{{ mailhog_users | default([]) }}"
+      become: yes
+      tags:
+        - mailhog
+        - skip_ansible_lint
+
+    - name: Mailhog | Activate auth file
+      set_fact:
+         mailhog_internal_params: "-auth-file {{ mailhog_authfile }}"
+      tags:
+        - mailhog
+
+    - name: Mailhog | Fix authfile permissions
+      file:
+        path: "{{ mailhog_authfile }}"
+        owner: root
+        group: nobody
+        mode: "u=rwx,g=r,o=r"
+      become: yes
+      tags:
+        - mailhog
+
+    when: mailhog_users | bool
+
   - name: Mailhog | Download distribution
     get_url: url=http://github.com/mailhog/MailHog/releases/download/v{{ mailhog_version }}/MailHog_linux_amd64 dest=/usr/local/bin/MailHog mode=0755
     become: yes
