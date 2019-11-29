@@ -4,6 +4,14 @@
   - name: Mailhog | Dependencies
     package: name="apache2-utils" state=present
     become: yes
+    when: ansible_os_family == "Debian"
+    tags:
+      - mailhog
+
+  - name: Mailhog | Dependencies
+    package: name="httpd-tools" state=present
+    become: yes
+    when: ansible_os_family == "RedHat" and ansible_distribution == "CentOS"
     tags:
       - mailhog
 
