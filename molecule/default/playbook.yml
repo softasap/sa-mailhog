@@ -12,5 +12,6 @@
 
   roles:
      - {
-        role: "sa-mailhog"
+        role: "sa-mailhog",
+        mailhog_users: "{{ box_mailhog_users }}"
        }
