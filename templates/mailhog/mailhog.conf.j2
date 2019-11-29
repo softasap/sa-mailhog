@@ -6,8 +6,11 @@ stop on runlevel [016]
 console log
 
 env PID=/var/run/mailhog.pid
-env USER=nobody
+env USER={{ mailhog_user | default('nobody') }}
 env BIN=/usr/local/bin/MailHog
-env MAILHOG_OPTS=""
+env MAILHOG_OPTS="{{ mailhog_params | default("") }}"
+{% for key in mailhog_env|default({}) %}
+env {{ key }}={{ mailhog_env[key] }}
+{% endfor %}
 
 exec start-stop-daemon --start --quiet --make-pidfile --pidfile ${PID} --exec ${BIN} ${MAILHOG_OPTS}
