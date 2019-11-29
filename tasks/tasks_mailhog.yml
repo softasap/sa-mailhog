@@ -8,7 +8,7 @@
 
   - name: Mailhog | Create upstart
     template:
-      src: "{{role_dir}}/templates/mailhog/mailhog.conf.j2"
+      src: "{{ role_dir }}/templates/mailhog/mailhog.conf.j2"
       dest: /etc/init/mailhog.conf
       mode: 0644
     when: upstart_system == "upstart" and docker_test is not defined
@@ -18,7 +18,7 @@
 
   - name: Mailhog | Create systemd service
     template:
-      src: "{{role_dir}}/templates/mailhog/mailhog.service.j2"
+      src: "{{ role_dir }}/templates/mailhog/mailhog.service.j2"
       dest: /etc/systemd/system/mailhog.service
       mode: 0644
     when: upstart_system == "systemd" and docker_test is not defined
